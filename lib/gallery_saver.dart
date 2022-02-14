@@ -75,17 +75,22 @@ class GallerySaver {
     return result;
   }
 
-  static Future<File> _downloadFile(String url) async {
+  static Future<File> _downloadFile(String url,
+      {Map<String, String>? headers}) async {
     Uri uri = Uri.parse(url);
+    print(url);
+    print(headers);
     http.Client _client = new http.Client();
-
     var req = await _client.get(uri);
+    if (req.statusCode >= 400) {
+      throw HttpException(req.statusCode.toString());
+    }
     var bytes = req.bodyBytes;
     String dir = (await getTemporaryDirectory()).path;
-
     File file = new File('$dir/${uri.pathSegments.last}');
     await file.writeAsBytes(bytes);
-    log('Downloaded file size:${await file.length()}', name: "GALLERY SAVER");
+    print('File size:${await file.length()}');
+    print(file.path);
     return file;
   }
 }
