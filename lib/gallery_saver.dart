@@ -78,7 +78,7 @@ class GallerySaver {
   static Future<File> _downloadFile(String url) async {
     Uri uri = Uri.parse(url);
     http.Client _client = new http.Client();
-    var req = await _client.get(Uri.parse(url));
+
     var req = await _client.get(uri);
     var bytes = req.bodyBytes;
     String dir = (await getTemporaryDirectory()).path;
